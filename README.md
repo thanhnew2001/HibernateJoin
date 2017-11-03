@@ -19,63 +19,63 @@ To construct this bean, Spring need the following properties:
 + hibernateProperties: not very important info, we can skip but we may need hibernate.hbm2ddl=create-drop to automatically create tables in db
 + packageToScan: this will tell Spring where to look for entity class
 
-    @Bean
-    public LocalSessionFactoryBean sessionFactory(){
+        @Bean
+        public LocalSessionFactoryBean sessionFactory(){
 
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.put("hibernate.show_sql", true);
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+            Properties properties = new Properties();
+            properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+            properties.put("hibernate.show_sql", true);
+            properties.put("hibernate.hbm2ddl.auto", "create-drop");
 
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        //To use postgresql
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hello");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("rmit");
+            //To use postgresql
+            dataSource.setDriverClassName("org.postgresql.Driver");
+            dataSource.setUrl("jdbc:postgresql://localhost:5432/hello");
+            dataSource.setUsername("postgres");
+            dataSource.setPassword("rmit");
 
-        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setDataSource(dataSource);
+            LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+            sessionFactoryBean.setDataSource(dataSource);
 
-        sessionFactoryBean.setHibernateProperties(properties);
-        sessionFactoryBean.setPackagesToScan("rmit.entity");
+            sessionFactoryBean.setHibernateProperties(properties);
+            sessionFactoryBean.setPackagesToScan("rmit.entity");
 
 
-        return  sessionFactoryBean;
-    }
+            return  sessionFactoryBean;
+        }
 
 5. The rest is very easy, we have a bean namely PersonService that has a dependency to sessionFactory. That is why we have to set @Autowire. We also need to annotate this class with @Transational as it is related to sessionFactory.
 
-@Transactional
-public class PersonService {
+        @Transactional
+        public class PersonService {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+            @Autowired
+            private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+            public void setSessionFactory(SessionFactory sessionFactory) {
+                this.sessionFactory = sessionFactory;
+            }
 
-    public void savePerson(Person person){
-        sessionFactory.getCurrentSession().save(person);
-    }
-}
+            public void savePerson(Person person){
+                sessionFactory.getCurrentSession().save(person);
+            }
+        }
 
 6. It is now ready to get a PersonService bean and start to use it:
 
-    public static void main(String[] args){
+        public static void main(String[] args){
 
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        PersonService personService = (PersonService) context.getBean("personService");
+            PersonService personService = (PersonService) context.getBean("personService");
 
-        Person person = new Person();
-        person.setName("Hien");
+            Person person = new Person();
+            person.setName("Hien");
 
-        personService.savePerson(person);
+            personService.savePerson(person);
 
-    }
+        }
 
 Special notes:
 - We can externalize the dataSource properties by using Environtment bean and a properties file. For simplicity, I have removed it and hardcoded it by actual string
