@@ -30,16 +30,25 @@ public class AppConfig {
     public LocalSessionFactoryBean sessionFactory(){
 
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        //For Postgresql
+        //properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        //For mysql
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         properties.put("hibernate.show_sql", true);
         properties.put("hibernate.hbm2ddl.auto", "create-drop");
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         //To use postgresql
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hello");
-        dataSource.setUsername("postgres");
+//        dataSource.setDriverClassName("org.postgresql.Driver");
+//        dataSource.setUrl("jdbc:postgresql://localhost:5432/hello");
+//        dataSource.setUsername("postgres");
+//        dataSource.setPassword("rmit");
+
+        //To use mysql
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://bestlab.us:3306/sadi");
+        dataSource.setUsername("root");
         dataSource.setPassword("rmit");
 
         //To use local hsqldb
