@@ -6,6 +6,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import rmit.entity.Course;
 import rmit.entity.Person;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,12 @@ public class PersonService {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+    //generic
+    public void save(Object object){
+        sessionFactory.getCurrentSession().save(object);
+    }
+
 
     public void savePerson(Person person){
         sessionFactory.getCurrentSession().save(person);
@@ -59,6 +66,11 @@ public class PersonService {
     public List<Person> getPersonByName3(String name){
         SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("select * from newperson");
         return query.list();
+    }
+
+    //courses
+    public Course getCourseById(int id){
+        return (Course) sessionFactory.getCurrentSession().get(Course.class, id);
     }
 
 }

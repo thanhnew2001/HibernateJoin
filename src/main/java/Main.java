@@ -1,5 +1,6 @@
 
 import rmit.config.AppConfig;
+import rmit.entity.Course;
 import rmit.service.PersonService;
 import rmit.entity.Person;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -22,29 +23,25 @@ public class Main {
         person.setName("henry");
         personService.savePerson(person);
 
-        Person person1 = new Person();
-        person1.setName("hoang");
-        personService.savePerson(person1);
+        Course sadi = new Course();
+        sadi.setName("Sadi");
+        sadi.setPerson(person);
+        personService.save(sadi);
 
-        List<Person> people1 = personService.getAllPersons();
+        Course wp = new Course();
+        wp.setName("Web programming");
+        wp.setPerson(person);
+        personService.save(wp);
 
-        List<Person> people2 = personService.getPersonByName("h");
+        Person newPerson = personService.getPersonById(1);
+        //Do nothing
+        System.out.println(newPerson.getCourses().size());
+        for(Course course: newPerson.getCourses()){
+            System.out.println(course.getName());
+        }
 
-        List<Person> people3 = personService.getPersonByName2("h");
-
-        List<Person> people4 = personService.getPersonByName3("h");
-
-        Person person2 = personService.getPersonById(person.getId());
-        System.out.println(person2.getName());
-
-        Person person3 = personService.getPersonById(person1.getId());
-        System.out.println(person3.getName());
-
-        System.out.println(people2);
-
-        System.out.println(people3);
-
-        System.out.println(people4);
+        Course newCourse = personService.getCourseById(1);
+        System.out.println(newCourse.getPerson().getName());
 
     }
 
